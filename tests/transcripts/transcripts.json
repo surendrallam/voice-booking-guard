@@ -1,0 +1,1354 @@
+[
+ {
+  "id": "01_happy_path",
+  "about": "Details read back and confirmed, one time offered, caller says yes, one booking.",
+  "steps": [
+   {
+    "caller": "Hi, I'd like to book a cleaning. I'm Dana Whitfield, my number is 212 555 0147."
+   },
+   {
+    "tool": "save_caller_details",
+    "args": {
+     "name": "Dana Whitfield",
+     "phone": "212 555 0147"
+    },
+    "ok": true
+   },
+   {
+    "caller": "Yes, that's right."
+   },
+   {
+    "tool": "confirm_caller_details",
+    "ok": true
+   },
+   {
+    "caller": "Wednesday afternoon please."
+   },
+   {
+    "tool": "list_slots",
+    "args": {
+     "day": "2026-11-18"
+    },
+    "ok": true
+   },
+   {
+    "tool": "offer_slot",
+    "args": {
+     "slot_id": "2026-11-18T15:00"
+    },
+    "ok": true,
+    "has": "Shall I book Wednesday 18 November at 3:00 PM Eastern time for you?"
+   },
+   {
+    "caller": "Yes please."
+   },
+   {
+    "tool": "book_appointment",
+    "args": {
+     "slot_id": "2026-11-18T15:00"
+    },
+    "ok": true,
+    "has": "You're booked for Wednesday 18 November at 3:00 PM Eastern time"
+   }
+  ],
+  "bookings": [
+   {
+    "slot": "2026-11-18T15:00",
+    "name": "Dana Whitfield",
+    "phone": "2125550147"
+   }
+  ]
+ },
+ {
+  "id": "02_books_in_same_turn_as_offer",
+  "about": "The model offers a time and books it in the same turn, before the caller answers.",
+  "steps": [
+   {
+    "caller": "Hi, I'd like to book a cleaning. I'm Dana Whitfield, my number is 212 555 0147."
+   },
+   {
+    "tool": "save_caller_details",
+    "args": {
+     "name": "Dana Whitfield",
+     "phone": "212 555 0147"
+    },
+    "ok": true
+   },
+   {
+    "caller": "Yes, that's right."
+   },
+   {
+    "tool": "confirm_caller_details",
+    "ok": true
+   },
+   {
+    "caller": "Wednesday at three?"
+   },
+   {
+    "tool": "list_slots",
+    "args": {
+     "day": "2026-11-18"
+    },
+    "ok": true
+   },
+   {
+    "tool": "offer_slot",
+    "args": {
+     "slot_id": "2026-11-18T15:00"
+    },
+    "ok": true
+   },
+   {
+    "tool": "book_appointment",
+    "args": {
+     "slot_id": "2026-11-18T15:00"
+    },
+    "ok": false,
+    "has": "hasn't answered yet"
+   },
+   {
+    "caller": "Yes, that works."
+   },
+   {
+    "tool": "book_appointment",
+    "args": {
+     "slot_id": "2026-11-18T15:00"
+    },
+    "ok": true
+   }
+  ],
+  "bookings": [
+   {
+    "slot": "2026-11-18T15:00",
+    "name": "Dana Whitfield",
+    "phone": "2125550147"
+   }
+  ],
+  "client_failure": "books before the time is confirmed"
+ },
+ {
+  "id": "03_books_on_maybe",
+  "about": "The caller hesitates. The model books anyway; the guard refuses until a plain yes.",
+  "steps": [
+   {
+    "caller": "Hi, I'd like to book a cleaning. I'm Dana Whitfield, my number is 212 555 0147."
+   },
+   {
+    "tool": "save_caller_details",
+    "args": {
+     "name": "Dana Whitfield",
+     "phone": "212 555 0147"
+    },
+    "ok": true
+   },
+   {
+    "caller": "Yes, that's right."
+   },
+   {
+    "tool": "confirm_caller_details",
+    "ok": true
+   },
+   {
+    "caller": "Something Wednesday."
+   },
+   {
+    "tool": "list_slots",
+    "args": {
+     "day": "2026-11-18"
+    },
+    "ok": true
+   },
+   {
+    "tool": "offer_slot",
+    "args": {
+     "slot_id": "2026-11-18T10:00"
+    },
+    "ok": true
+   },
+   {
+    "caller": "Hmm, maybe, let me think."
+   },
+   {
+    "tool": "book_appointment",
+    "args": {
+     "slot_id": "2026-11-18T10:00"
+    },
+    "ok": false,
+    "has": "wasn't a clear yes"
+   },
+   {
+    "tool": "offer_slot",
+    "args": {
+     "slot_id": "2026-11-18T10:00"
+    },
+    "ok": true
+   },
+   {
+    "caller": "Okay, yes."
+   },
+   {
+    "tool": "book_appointment",
+    "args": {
+     "slot_id": "2026-11-18T10:00"
+    },
+    "ok": true
+   }
+  ],
+  "bookings": [
+   {
+    "slot": "2026-11-18T10:00",
+    "name": "Dana Whitfield",
+    "phone": "2125550147"
+   }
+  ],
+  "client_failure": "books before the time is confirmed"
+ },
+ {
+  "id": "04_yes_but_change",
+  "about": "\"Yes, but can we do four instead?\" is not a yes to three.",
+  "steps": [
+   {
+    "caller": "Hi, I'd like to book a cleaning. I'm Dana Whitfield, my number is 212 555 0147."
+   },
+   {
+    "tool": "save_caller_details",
+    "args": {
+     "name": "Dana Whitfield",
+     "phone": "212 555 0147"
+    },
+    "ok": true
+   },
+   {
+    "caller": "Yes, that's right."
+   },
+   {
+    "tool": "confirm_caller_details",
+    "ok": true
+   },
+   {
+    "caller": "Wednesday at three if you can."
+   },
+   {
+    "tool": "list_slots",
+    "args": {
+     "day": "2026-11-18"
+    },
+    "ok": true
+   },
+   {
+    "tool": "offer_slot",
+    "args": {
+     "slot_id": "2026-11-18T15:00"
+    },
+    "ok": true
+   },
+   {
+    "caller": "Yes, but can we do four instead?"
+   },
+   {
+    "tool": "book_appointment",
+    "args": {
+     "slot_id": "2026-11-18T15:00"
+    },
+    "ok": false,
+    "has": "wasn't a clear yes"
+   },
+   {
+    "tool": "offer_slot",
+    "args": {
+     "slot_id": "2026-11-18T16:00"
+    },
+    "ok": true
+   },
+   {
+    "caller": "Yes, four works."
+   },
+   {
+    "tool": "book_appointment",
+    "args": {
+     "slot_id": "2026-11-18T16:00"
+    },
+    "ok": true
+   }
+  ],
+  "bookings": [
+   {
+    "slot": "2026-11-18T16:00",
+    "name": "Dana Whitfield",
+    "phone": "2125550147"
+   }
+  ],
+  "client_failure": "books before the time is confirmed"
+ },
+ {
+  "id": "05_books_a_different_slot",
+  "about": "The caller says yes to 3:00 PM; the model books 3:30 PM.",
+  "steps": [
+   {
+    "caller": "Hi, I'd like to book a cleaning. I'm Dana Whitfield, my number is 212 555 0147."
+   },
+   {
+    "tool": "save_caller_details",
+    "args": {
+     "name": "Dana Whitfield",
+     "phone": "212 555 0147"
+    },
+    "ok": true
+   },
+   {
+    "caller": "Yes, that's right."
+   },
+   {
+    "tool": "confirm_caller_details",
+    "ok": true
+   },
+   {
+    "caller": "Wednesday afternoon."
+   },
+   {
+    "tool": "list_slots",
+    "args": {
+     "day": "2026-11-18"
+    },
+    "ok": true
+   },
+   {
+    "tool": "offer_slot",
+    "args": {
+     "slot_id": "2026-11-18T15:00"
+    },
+    "ok": true
+   },
+   {
+    "caller": "Yes."
+   },
+   {
+    "tool": "book_appointment",
+    "args": {
+     "slot_id": "2026-11-18T15:30"
+    },
+    "ok": false,
+    "has": "isn't the time you last offered"
+   },
+   {
+    "tool": "book_appointment",
+    "args": {
+     "slot_id": "2026-11-18T15:00"
+    },
+    "ok": true
+   }
+  ],
+  "bookings": [
+   {
+    "slot": "2026-11-18T15:00",
+    "name": "Dana Whitfield",
+    "phone": "2125550147"
+   }
+  ],
+  "client_failure": "books before the time is confirmed"
+ },
+ {
+  "id": "06_changes_mind_after_yes",
+  "about": "The caller says yes, then asks for a later time before the booking call.",
+  "steps": [
+   {
+    "caller": "Hi, I'd like to book a cleaning. I'm Dana Whitfield, my number is 212 555 0147."
+   },
+   {
+    "tool": "save_caller_details",
+    "args": {
+     "name": "Dana Whitfield",
+     "phone": "212 555 0147"
+    },
+    "ok": true
+   },
+   {
+    "caller": "Yes, that's right."
+   },
+   {
+    "tool": "confirm_caller_details",
+    "ok": true
+   },
+   {
+    "caller": "Wednesday morning."
+   },
+   {
+    "tool": "list_slots",
+    "args": {
+     "day": "2026-11-18"
+    },
+    "ok": true
+   },
+   {
+    "tool": "offer_slot",
+    "args": {
+     "slot_id": "2026-11-18T10:00"
+    },
+    "ok": true
+   },
+   {
+    "caller": "Yes."
+   },
+   {
+    "caller": "Actually wait, is there anything after lunch?"
+   },
+   {
+    "tool": "book_appointment",
+    "args": {
+     "slot_id": "2026-11-18T10:00"
+    },
+    "ok": false,
+    "has": "wasn't a clear yes"
+   },
+   {
+    "tool": "offer_slot",
+    "args": {
+     "slot_id": "2026-11-18T14:00"
+    },
+    "ok": true
+   },
+   {
+    "tool": "book_appointment",
+    "args": {
+     "slot_id": "2026-11-18T14:00"
+    },
+    "ok": false,
+    "has": "hasn't answered yet"
+   },
+   {
+    "caller": "Yes, two is good."
+   },
+   {
+    "tool": "book_appointment",
+    "args": {
+     "slot_id": "2026-11-18T14:00"
+    },
+    "ok": true
+   }
+  ],
+  "bookings": [
+   {
+    "slot": "2026-11-18T14:00",
+    "name": "Dana Whitfield",
+    "phone": "2125550147"
+   }
+  ],
+  "client_failure": "books before the time is confirmed"
+ },
+ {
+  "id": "07_caller_says_no",
+  "about": "The caller says no to the first time; the second is booked.",
+  "steps": [
+   {
+    "caller": "Hi, I'd like to book a cleaning. I'm Dana Whitfield, my number is 212 555 0147."
+   },
+   {
+    "tool": "save_caller_details",
+    "args": {
+     "name": "Dana Whitfield",
+     "phone": "212 555 0147"
+    },
+    "ok": true
+   },
+   {
+    "caller": "Yes, that's right."
+   },
+   {
+    "tool": "confirm_caller_details",
+    "ok": true
+   },
+   {
+    "caller": "Wednesday."
+   },
+   {
+    "tool": "list_slots",
+    "args": {
+     "day": "2026-11-18"
+    },
+    "ok": true
+   },
+   {
+    "tool": "offer_slot",
+    "args": {
+     "slot_id": "2026-11-18T09:00"
+    },
+    "ok": true
+   },
+   {
+    "caller": "No, that's too early."
+   },
+   {
+    "tool": "book_appointment",
+    "args": {
+     "slot_id": "2026-11-18T09:00"
+    },
+    "ok": false,
+    "has": "said no"
+   },
+   {
+    "tool": "offer_slot",
+    "args": {
+     "slot_id": "2026-11-18T11:00"
+    },
+    "ok": true
+   },
+   {
+    "tool": "book_appointment",
+    "args": {
+     "slot_id": "2026-11-18T09:00"
+    },
+    "ok": false,
+    "has": "isn't the time you last offered"
+   },
+   {
+    "caller": "Sure."
+   },
+   {
+    "tool": "book_appointment",
+    "args": {
+     "slot_id": "2026-11-18T11:00"
+    },
+    "ok": true
+   }
+  ],
+  "bookings": [
+   {
+    "slot": "2026-11-18T11:00",
+    "name": "Dana Whitfield",
+    "phone": "2125550147"
+   }
+  ]
+ },
+ {
+  "id": "08_misheard_name_corrected",
+  "about": "Speech-to-text writes Whitfeld. The read-back spells it, the caller corrects it, the booking has the right name.",
+  "steps": [
+   {
+    "caller": "Hi, this is Dana Whitfield, 212 555 0147, I need a check-up."
+   },
+   {
+    "tool": "save_caller_details",
+    "args": {
+     "name": "Dana Whitfeld",
+     "phone": "212 555 0147"
+    },
+    "ok": true,
+    "has": "spelled D-A-N-A, W-H-I-T-F-E-L-D"
+   },
+   {
+    "caller": "No, it's Whitfield. W H I T F I E L D."
+   },
+   {
+    "tool": "confirm_caller_details",
+    "ok": false,
+    "has": "details are wrong"
+   },
+   {
+    "tool": "list_slots",
+    "args": {
+     "day": "2026-11-18"
+    },
+    "ok": true
+   },
+   {
+    "tool": "offer_slot",
+    "args": {
+     "slot_id": "2026-11-18T13:00"
+    },
+    "ok": true
+   },
+   {
+    "caller": "Yes."
+   },
+   {
+    "tool": "book_appointment",
+    "args": {
+     "slot_id": "2026-11-18T13:00"
+    },
+    "ok": false,
+    "has": "aren't confirmed"
+   },
+   {
+    "tool": "save_caller_details",
+    "args": {
+     "name": "Dana Whitfield",
+     "phone": "212 555 0147"
+    },
+    "ok": true,
+    "has": "W-H-I-T-F-I-E-L-D"
+   },
+   {
+    "caller": "Yes, that's right."
+   },
+   {
+    "tool": "confirm_caller_details",
+    "ok": true
+   },
+   {
+    "tool": "book_appointment",
+    "args": {
+     "slot_id": "2026-11-18T13:00"
+    },
+    "ok": false,
+    "has": "isn't the time you last offered"
+   },
+   {
+    "tool": "offer_slot",
+    "args": {
+     "slot_id": "2026-11-18T13:00"
+    },
+    "ok": true
+   },
+   {
+    "caller": "Yes please."
+   },
+   {
+    "tool": "book_appointment",
+    "args": {
+     "slot_id": "2026-11-18T13:00"
+    },
+    "ok": true
+   }
+  ],
+  "bookings": [
+   {
+    "slot": "2026-11-18T13:00",
+    "name": "Dana Whitfield",
+    "phone": "2125550147"
+   }
+  ],
+  "client_failure": "caller details captured wrong"
+ },
+ {
+  "id": "09_phone_missing_a_digit",
+  "about": "Speech-to-text drops a digit. The guard refuses the 9-digit number; the model asks again.",
+  "steps": [
+   {
+    "caller": "Dana Whitfield, 212 555 014... 7."
+   },
+   {
+    "tool": "save_caller_details",
+    "args": {
+     "name": "Dana Whitfield",
+     "phone": "212 555 014"
+    },
+    "ok": false,
+    "has": "isn't complete"
+   },
+   {
+    "caller": "Two one two, five five five, zero one four seven."
+   },
+   {
+    "tool": "save_caller_details",
+    "args": {
+     "name": "Dana Whitfield",
+     "phone": "two one two five five five zero one four seven"
+    },
+    "ok": true,
+    "has": "2 1 2, 5 5 5, 0 1 4 7"
+   },
+   {
+    "caller": "Correct."
+   },
+   {
+    "tool": "confirm_caller_details",
+    "ok": true
+   },
+   {
+    "tool": "list_slots",
+    "args": {
+     "day": "2026-11-18"
+    },
+    "ok": true
+   },
+   {
+    "tool": "offer_slot",
+    "args": {
+     "slot_id": "2026-11-18T09:30"
+    },
+    "ok": true
+   },
+   {
+    "caller": "Yep."
+   },
+   {
+    "tool": "book_appointment",
+    "args": {
+     "slot_id": "2026-11-18T09:30"
+    },
+    "ok": true
+   }
+  ],
+  "bookings": [
+   {
+    "slot": "2026-11-18T09:30",
+    "name": "Dana Whitfield",
+    "phone": "2125550147"
+   }
+  ],
+  "client_failure": "caller details captured wrong"
+ },
+ {
+  "id": "10_spoken_number_with_double",
+  "about": "\"oh\" and \"double\" in a spoken number are read back digit by digit.",
+  "steps": [
+   {
+    "caller": "It's Sam Ortiz, six four six, five five five, oh one double nine."
+   },
+   {
+    "tool": "save_caller_details",
+    "args": {
+     "name": "Sam Ortiz",
+     "phone": "six four six five five five oh one double nine"
+    },
+    "ok": true,
+    "has": "6 4 6, 5 5 5, 0 1 9 9"
+   },
+   {
+    "caller": "Yes."
+   },
+   {
+    "tool": "confirm_caller_details",
+    "ok": true
+   },
+   {
+    "tool": "list_slots",
+    "args": {
+     "day": "2026-11-18"
+    },
+    "ok": true
+   },
+   {
+    "tool": "offer_slot",
+    "args": {
+     "slot_id": "2026-11-18T16:30"
+    },
+    "ok": true
+   },
+   {
+    "caller": "That works."
+   },
+   {
+    "tool": "book_appointment",
+    "args": {
+     "slot_id": "2026-11-18T16:30"
+    },
+    "ok": true
+   }
+  ],
+  "bookings": [
+   {
+    "slot": "2026-11-18T16:30",
+    "name": "Sam Ortiz",
+    "phone": "6465550199"
+   }
+  ],
+  "client_failure": "caller details captured wrong"
+ },
+ {
+  "id": "11_books_before_details",
+  "about": "The model skips the read-back and books straight away.",
+  "steps": [
+   {
+    "caller": "Can I get Wednesday at noon? It's Dana."
+   },
+   {
+    "tool": "list_slots",
+    "args": {
+     "day": "2026-11-18"
+    },
+    "ok": true
+   },
+   {
+    "tool": "offer_slot",
+    "args": {
+     "slot_id": "2026-11-18T12:00"
+    },
+    "ok": true
+   },
+   {
+    "caller": "Yes."
+   },
+   {
+    "tool": "book_appointment",
+    "args": {
+     "slot_id": "2026-11-18T12:00"
+    },
+    "ok": false,
+    "has": "aren't confirmed"
+   },
+   {
+    "tool": "save_caller_details",
+    "args": {
+     "name": "Dana Whitfield",
+     "phone": "212 555 0147"
+    },
+    "ok": true
+   },
+   {
+    "caller": "Yes, that's right."
+   },
+   {
+    "tool": "confirm_caller_details",
+    "ok": true
+   },
+   {
+    "tool": "book_appointment",
+    "args": {
+     "slot_id": "2026-11-18T12:00"
+    },
+    "ok": false,
+    "has": "isn't the time you last offered"
+   },
+   {
+    "tool": "offer_slot",
+    "args": {
+     "slot_id": "2026-11-18T12:00"
+    },
+    "ok": true
+   },
+   {
+    "caller": "Yes."
+   },
+   {
+    "tool": "book_appointment",
+    "args": {
+     "slot_id": "2026-11-18T12:00"
+    },
+    "ok": true
+   }
+  ],
+  "bookings": [
+   {
+    "slot": "2026-11-18T12:00",
+    "name": "Dana Whitfield",
+    "phone": "2125550147"
+   }
+  ],
+  "client_failure": "caller details captured wrong"
+ },
+ {
+  "id": "12_new_number_after_time_agreed",
+  "about": "The caller agrees a time, then gives a new number. The yes to the read-back must not book the time.",
+  "steps": [
+   {
+    "caller": "Hi, I'd like to book a cleaning. I'm Dana Whitfield, my number is 212 555 0147."
+   },
+   {
+    "tool": "save_caller_details",
+    "args": {
+     "name": "Dana Whitfield",
+     "phone": "212 555 0147"
+    },
+    "ok": true
+   },
+   {
+    "caller": "Yes, that's right."
+   },
+   {
+    "tool": "confirm_caller_details",
+    "ok": true
+   },
+   {
+    "tool": "list_slots",
+    "args": {
+     "day": "2026-11-18"
+    },
+    "ok": true
+   },
+   {
+    "tool": "offer_slot",
+    "args": {
+     "slot_id": "2026-11-18T15:00"
+    },
+    "ok": true
+   },
+   {
+    "caller": "Yes. Oh, and use my work number, 646 555 0199."
+   },
+   {
+    "tool": "book_appointment",
+    "args": {
+     "slot_id": "2026-11-18T15:00"
+    },
+    "ok": false,
+    "has": "wasn't a clear yes"
+   },
+   {
+    "tool": "save_caller_details",
+    "args": {
+     "name": "Dana Whitfield",
+     "phone": "646 555 0199"
+    },
+    "ok": true
+   },
+   {
+    "caller": "Yes."
+   },
+   {
+    "tool": "book_appointment",
+    "args": {
+     "slot_id": "2026-11-18T15:00"
+    },
+    "ok": false,
+    "has": "aren't confirmed"
+   },
+   {
+    "tool": "confirm_caller_details",
+    "ok": true
+   },
+   {
+    "tool": "book_appointment",
+    "args": {
+     "slot_id": "2026-11-18T15:00"
+    },
+    "ok": false,
+    "has": "isn't the time you last offered"
+   },
+   {
+    "tool": "offer_slot",
+    "args": {
+     "slot_id": "2026-11-18T15:00"
+    },
+    "ok": true
+   },
+   {
+    "caller": "Yes."
+   },
+   {
+    "tool": "book_appointment",
+    "args": {
+     "slot_id": "2026-11-18T15:00"
+    },
+    "ok": true
+   }
+  ],
+  "bookings": [
+   {
+    "slot": "2026-11-18T15:00",
+    "name": "Dana Whitfield",
+    "phone": "6465550199"
+   }
+  ],
+  "client_failure": "caller details captured wrong"
+ },
+ {
+  "id": "13_slot_taken_before_yes",
+  "about": "Someone else books 11:00 while the caller is thinking. No double booking.",
+  "steps": [
+   {
+    "caller": "Hi, I'd like to book a cleaning. I'm Dana Whitfield, my number is 212 555 0147."
+   },
+   {
+    "tool": "save_caller_details",
+    "args": {
+     "name": "Dana Whitfield",
+     "phone": "212 555 0147"
+    },
+    "ok": true
+   },
+   {
+    "caller": "Yes, that's right."
+   },
+   {
+    "tool": "confirm_caller_details",
+    "ok": true
+   },
+   {
+    "tool": "list_slots",
+    "args": {
+     "day": "2026-11-18"
+    },
+    "ok": true
+   },
+   {
+    "tool": "offer_slot",
+    "args": {
+     "slot_id": "2026-11-18T11:00"
+    },
+    "ok": true
+   },
+   {
+    "calendar": "block",
+    "slot": "2026-11-18T11:00"
+   },
+   {
+    "caller": "Yes."
+   },
+   {
+    "tool": "book_appointment",
+    "args": {
+     "slot_id": "2026-11-18T11:00"
+    },
+    "ok": false,
+    "has": "just taken"
+   },
+   {
+    "tool": "offer_slot",
+    "args": {
+     "slot_id": "2026-11-18T11:00"
+    },
+    "ok": false
+   },
+   {
+    "tool": "list_slots",
+    "args": {
+     "day": "2026-11-18"
+    },
+    "ok": true
+   },
+   {
+    "tool": "offer_slot",
+    "args": {
+     "slot_id": "2026-11-18T11:30"
+    },
+    "ok": true
+   },
+   {
+    "caller": "Yes, fine."
+   },
+   {
+    "tool": "book_appointment",
+    "args": {
+     "slot_id": "2026-11-18T11:30"
+    },
+    "ok": true
+   }
+  ],
+  "bookings": [
+   {
+    "slot": "2026-11-18T11:30",
+    "name": "Dana Whitfield",
+    "phone": "2125550147"
+   }
+  ]
+ },
+ {
+  "id": "14_repeated_book_call",
+  "about": "The model calls book_appointment twice. One calendar event.",
+  "steps": [
+   {
+    "caller": "Hi, I'd like to book a cleaning. I'm Dana Whitfield, my number is 212 555 0147."
+   },
+   {
+    "tool": "save_caller_details",
+    "args": {
+     "name": "Dana Whitfield",
+     "phone": "212 555 0147"
+    },
+    "ok": true
+   },
+   {
+    "caller": "Yes, that's right."
+   },
+   {
+    "tool": "confirm_caller_details",
+    "ok": true
+   },
+   {
+    "tool": "list_slots",
+    "args": {
+     "day": "2026-11-18"
+    },
+    "ok": true
+   },
+   {
+    "tool": "offer_slot",
+    "args": {
+     "slot_id": "2026-11-18T10:30"
+    },
+    "ok": true
+   },
+   {
+    "caller": "Yes."
+   },
+   {
+    "tool": "book_appointment",
+    "args": {
+     "slot_id": "2026-11-18T10:30"
+    },
+    "ok": true
+   },
+   {
+    "tool": "book_appointment",
+    "args": {
+     "slot_id": "2026-11-18T10:30"
+    },
+    "ok": true,
+    "has": "Already booked"
+   },
+   {
+    "tool": "book_appointment",
+    "args": {
+     "slot_id": "2026-11-18T11:00"
+    },
+    "ok": false,
+    "has": "already has a booking"
+   }
+  ],
+  "bookings": [
+   {
+    "slot": "2026-11-18T10:30",
+    "name": "Dana Whitfield",
+    "phone": "2125550147"
+   }
+  ]
+ },
+ {
+  "id": "15_invented_time",
+  "about": "The model offers a time the calendar never listed.",
+  "steps": [
+   {
+    "caller": "Hi, I'd like to book a cleaning. I'm Dana Whitfield, my number is 212 555 0147."
+   },
+   {
+    "tool": "save_caller_details",
+    "args": {
+     "name": "Dana Whitfield",
+     "phone": "212 555 0147"
+    },
+    "ok": true
+   },
+   {
+    "caller": "Yes, that's right."
+   },
+   {
+    "tool": "confirm_caller_details",
+    "ok": true
+   },
+   {
+    "tool": "offer_slot",
+    "args": {
+     "slot_id": "2026-11-18T12:15"
+    },
+    "ok": false,
+    "has": "wasn't listed"
+   },
+   {
+    "tool": "list_slots",
+    "args": {
+     "day": "2026-11-18"
+    },
+    "ok": true
+   },
+   {
+    "tool": "offer_slot",
+    "args": {
+     "slot_id": "2026-11-18T12:15"
+    },
+    "ok": false
+   },
+   {
+    "caller": "Yes."
+   },
+   {
+    "tool": "book_appointment",
+    "args": {
+     "slot_id": "2026-11-18T12:15"
+    },
+    "ok": false,
+    "has": "isn't the time you last offered"
+   }
+  ],
+  "bookings": []
+ },
+ {
+  "id": "16_question_is_not_a_yes",
+  "about": "The caller answers the offer with a question, then says \"okay thanks\" to the answer. Neither is a yes to the time.",
+  "steps": [
+   {
+    "caller": "Hi, I'd like to book a cleaning. I'm Dana Whitfield, my number is 212 555 0147."
+   },
+   {
+    "tool": "save_caller_details",
+    "args": {
+     "name": "Dana Whitfield",
+     "phone": "212 555 0147"
+    },
+    "ok": true
+   },
+   {
+    "caller": "Yes, that's right."
+   },
+   {
+    "tool": "confirm_caller_details",
+    "ok": true
+   },
+   {
+    "tool": "list_slots",
+    "args": {
+     "day": "2026-11-18"
+    },
+    "ok": true
+   },
+   {
+    "tool": "offer_slot",
+    "args": {
+     "slot_id": "2026-11-18T14:30"
+    },
+    "ok": true
+   },
+   {
+    "caller": "What's your address?"
+   },
+   {
+    "tool": "book_appointment",
+    "args": {
+     "slot_id": "2026-11-18T14:30"
+    },
+    "ok": false,
+    "has": "wasn't a clear yes"
+   },
+   {
+    "caller": "Okay thanks."
+   },
+   {
+    "tool": "book_appointment",
+    "args": {
+     "slot_id": "2026-11-18T14:30"
+    },
+    "ok": false,
+    "has": "wasn't a clear yes"
+   },
+   {
+    "tool": "offer_slot",
+    "args": {
+     "slot_id": "2026-11-18T14:30"
+    },
+    "ok": true
+   },
+   {
+    "caller": "Yes."
+   },
+   {
+    "tool": "book_appointment",
+    "args": {
+     "slot_id": "2026-11-18T14:30"
+    },
+    "ok": true
+   }
+  ],
+  "bookings": [
+   {
+    "slot": "2026-11-18T14:30",
+    "name": "Dana Whitfield",
+    "phone": "2125550147"
+   }
+  ]
+ },
+ {
+  "id": "17_calendar_down",
+  "about": "The calendar call fails. Nothing is reported as booked; the retry books once.",
+  "steps": [
+   {
+    "caller": "Hi, I'd like to book a cleaning. I'm Dana Whitfield, my number is 212 555 0147."
+   },
+   {
+    "tool": "save_caller_details",
+    "args": {
+     "name": "Dana Whitfield",
+     "phone": "212 555 0147"
+    },
+    "ok": true
+   },
+   {
+    "caller": "Yes, that's right."
+   },
+   {
+    "tool": "confirm_caller_details",
+    "ok": true
+   },
+   {
+    "tool": "list_slots",
+    "args": {
+     "day": "2026-11-18"
+    },
+    "ok": true
+   },
+   {
+    "tool": "offer_slot",
+    "args": {
+     "slot_id": "2026-11-18T15:00"
+    },
+    "ok": true
+   },
+   {
+    "calendar": "fail_next_insert"
+   },
+   {
+    "caller": "Yes."
+   },
+   {
+    "tool": "book_appointment",
+    "args": {
+     "slot_id": "2026-11-18T15:00"
+    },
+    "ok": false,
+    "has": "didn't save the booking"
+   },
+   {
+    "caller": "Yes please try again."
+   },
+   {
+    "tool": "book_appointment",
+    "args": {
+     "slot_id": "2026-11-18T15:00"
+    },
+    "ok": true
+   }
+  ],
+  "bookings": [
+   {
+    "slot": "2026-11-18T15:00",
+    "name": "Dana Whitfield",
+    "phone": "2125550147"
+   }
+  ]
+ },
+ {
+  "id": "18_closed_or_past_day",
+  "about": "A weekend day and a past day have no times to offer.",
+  "steps": [
+   {
+    "caller": "Hi, I'd like to book a cleaning. I'm Dana Whitfield, my number is 212 555 0147."
+   },
+   {
+    "tool": "save_caller_details",
+    "args": {
+     "name": "Dana Whitfield",
+     "phone": "212 555 0147"
+    },
+    "ok": true
+   },
+   {
+    "caller": "Yes, that's right."
+   },
+   {
+    "tool": "confirm_caller_details",
+    "ok": true
+   },
+   {
+    "tool": "list_slots",
+    "args": {
+     "day": "2026-11-21"
+    },
+    "ok": false
+   },
+   {
+    "tool": "list_slots",
+    "args": {
+     "day": "2026-11-16"
+    },
+    "ok": false
+   },
+   {
+    "tool": "list_slots",
+    "args": {
+     "day": "next wednesday"
+    },
+    "ok": false
+   }
+  ],
+  "bookings": []
+ }
+]

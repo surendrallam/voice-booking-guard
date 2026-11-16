@@ -1,0 +1,24 @@
+[project]
+name = "voice-booking-guard"
+version = "0.1.0"
+description = "Booking rules for a LiveKit voice agent: read back the caller's details and book only after a clear yes to the exact time."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.12"
+dependencies = ["tzdata; sys_platform == 'win32'"]
+
+[project.optional-dependencies]
+livekit = ["livekit-agents>=1.8,<2"]
+dev = ["pytest>=8", "livekit-agents>=1.8,<2"]
+
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src", "tests"]
+testpaths = ["tests"]
