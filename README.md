@@ -65,8 +65,8 @@ No keys, accounts or network needed after install.
 Not done here, as it needs the real agent. The steps would be:
 
 1. Wrap the working Google Calendar code in a class with `free_slots(day)`, `is_free(slot)` and `insert(event_id, slot, name, phone)`.
-2. Start the existing `AgentSession` with `BookingAgent(business, calendar, call_id, now)` in place of the current agent. STT, LLM, TTS and the Telnyx SIP setup stay as they are.
-3. Merge the business's own prompt into `INSTRUCTIONS`, keeping the five steps.
+2. Add the guard to the existing agent: one `BookingGuard` per call, each final caller turn passed to it in `on_user_turn_completed`, and the agent's detail and booking tools routed through the five guard checks. Or start from `BookingAgent` and merge the existing prompt and tools into it. Either way the `AgentSession`, STT, LLM, TTS and the Telnyx SIP setup stay as they are.
+3. Add the five steps in `INSTRUCTIONS` to the business's own prompt.
 4. Replay a few real call recordings as transcripts in the same JSON format and add them to the tests.
 
 ## What I would check first in a booking agent

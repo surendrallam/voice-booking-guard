@@ -1,9 +1,10 @@
 """The guard as a LiveKit Agents `Agent` (livekit-agents 1.8).
 
-Drop-in shape for an existing LiveKit + Telnyx SIP agent: keep your
-`AgentSession` (STT, LLM, TTS, VAD) and your SIP setup, and start the session
-with this agent instead of your current one. Your Google Calendar code goes in
-an object with the three methods of `booking_guard.calendar.Calendar`.
+For an existing LiveKit + Telnyx SIP agent: keep your `AgentSession` (STT,
+LLM, TTS, VAD) and your SIP setup. Add the `on_user_turn_completed` hook and
+the five tools below to your own agent, or start from this class and merge
+your prompt and tools into it. Your Google Calendar code goes in an object
+with the three methods of `booking_guard.calendar.Calendar`.
 
 Two things make the booking safe:
 - `on_user_turn_completed` passes each final caller turn to the guard before
